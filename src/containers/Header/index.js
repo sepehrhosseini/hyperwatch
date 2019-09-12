@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { Wrapper } from './styled';
+import { Wrapper, Logo } from './styled';
 import { Nav } from '../../components/Nav';
 import Search from '../../components/Search';
 
@@ -21,6 +22,11 @@ class Header extends Component {
 
         return (
             <Wrapper>
+                <Logo>
+                    <Link to='/'>
+                        <img src='/assets/images/logo.png' />
+                    </Link>
+                </Logo>
                 <Search
                     onQueryChange={this.handleSearchChange}
                     query={searchQuery}

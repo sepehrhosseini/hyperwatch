@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SearchWrapper = styled.div`
-    margin-bottom: 2rem;
+    margin-left: 30px;
 `
 
 export const Search = styled.div`

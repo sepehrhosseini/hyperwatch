@@ -5,4 +5,13 @@ export const Wrapper = styled.div`
     margin: 0 auto;
 
     margin-top: 40px;
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+`
+
+export const Logo = styled.div`
+    max-width: 300px;
+    margin-right: 20px;
 `
