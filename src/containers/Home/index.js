@@ -5,28 +5,42 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Grid from '@material-ui/core/Grid';
 import { map, capitalize } from 'lodash'
 
+import history from '../../history';
 import Search from '../../components/Search';
+import TitleDetail from '../../components/TitleDetail';
 
 import { connect } from 'react-redux'
 import { Wrapper, List, Card } from './styled'
-import { getPopularMovies, getPopularShows } from './actions'
-
-const useStyles = makeStyles(theme => ({
-  listSection: {
-    backgroundColor: 'inherit',
-  },
-  ul: {
-    backgroundColor: 'inherit',
-    padding: 0,
-  },
-}));
+import * as Actions from './actions'
 
 class Home extends Component {
     componentDidMount() {
-        this.props.getPopularMoviesConnect();
-        this.props.getPopularShowsConnect();
+        const { getPopularMovies, getPopularShows, getSingleTitle, match } = this.props;
+
+        getPopularMovies();
+        getPopularShows();
+
+        if (match.params.title_type && match.params.title_id) {
+            getSingleTitle({
+                type: match.params.title_type,
+                id: match.params.title_id,
+            });
+        }
+    }
+
+    onTitleClick = ({ title, type }) => {
+        const { getSingleTitle } = this.props;
+
+        getSingleTitle({
+            type,
+            id: title.ids.imdb
+        })
+
+        history.push(`/${type}/${title.ids.imdb}`);
+
     }
 
     renderList({ movies, shows }) {
@@ -39,7 +53,7 @@ class Home extends Component {
                         </ListSubheader>
 
                         {list.map(item => (
-                          <ListItem key={`item-${title}-${item}`} button>
+                            <ListItem key={`item-${title}-${item}`} button onClick={() => this.onTitleClick({ title: item, type: title })}>
                             <ListItemText primary={item.title} secondary={item.year} />
                           </ListItem>
                         ))}
@@ -50,19 +64,26 @@ class Home extends Component {
     }
 
     render() {
-      const { movies, shows, isLoading, state } = this.props;
-
-      if (isLoading) return <LinearProgress />;
-
+      const { movies, shows, isLoading, singleState } = this.props;
       return (
           <Wrapper>
-            <Card>
-                <List subheader={<li />}>
+              <Grid container>
+                  <Grid md={4} item>
+                    <Card isLoading={isLoading}>
+                        <List subheader={<li />}>
 
-                  { this.renderList({movies, shows}) }
+                          { this.renderList({movies, shows}) }
 
-                </List>
-            </Card>
+                        </List>
+                    </Card>
+                  </Grid>
+                  <Grid md={8} item>
+                      <TitleDetail
+                          title={singleState.title}
+                          isLoading={singleState.isLoading}
+                      />
+                  </Grid>
+            </Grid>
           </Wrapper>
       );
     }
@@ -70,9 +91,11 @@ class Home extends Component {
 
 export default connect(state => ({
     movies: state.home.movies,
-    shows: state.home.movies,
+    shows: state.home.shows,
     isLoading: state.home.isLoading,
+    singleState: state.home.single
 }), {
-    getPopularMoviesConnect: getPopularMovies,
-    getPopularShowsConnect: getPopularShows
+    getPopularMovies: Actions.getPopularMovies,
+    getPopularShows: Actions.getPopularShows,
+    getSingleTitle: Actions.getSingleTitle
 })(Home)

@@ -1,9 +1,17 @@
-import { Movies, Shows } from './actions'
+import { Movies, Shows, Title } from './actions'
 
 const initialState = {
     shows: [],
     movies: [],
     isLoading: true,
+
+    single: {
+        isLoading: false,
+        error: null,
+        id: null,
+        title: null,
+        type: null
+    }
 }
 
 export default (state = initialState, action) => {
@@ -46,6 +54,37 @@ export default (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 error: action.error
+            }
+
+        case Title.getSingle:
+            return {
+                ...state,
+                single: {
+                    ...state.single,
+                    type: action.titleType,
+                    id: action.id,
+                    isLoading: true,
+                }
+            }
+
+        case Title.getSingleSuccess:
+            return {
+                ...state,
+                single: {
+                    ...state.single,
+                    isLoading: false,
+                    title: action.title
+                }
+            }
+
+        case Title.getSingleFailed:
+            return {
+                ...state,
+                single: {
+                    ...state.single,
+                    isLoading: false,
+                    error: action.error,
+                }
             }
 
         default:

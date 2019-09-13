@@ -28,7 +28,6 @@ class SearchPage extends Component {
 
     renderList({ movies, shows }) {
         return map({ movies, shows }, (list, title) => {
-            console.log('list', list)
             return (
                 <li key={title}>
                     <ul style={{ backgroundColor: '#fff', padding: 0 }}>

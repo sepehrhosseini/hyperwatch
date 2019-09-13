@@ -11,8 +11,8 @@ function App() {
         <div className="App">
             <Header />
             <Switch>
-                <Route path='/' exact component={Home} />
                 <Route path='/search/:query' exact component={SearchPage} />
+                <Route path='/:title_type?/:title_id?' exact component={Home} />
             </Switch>
         </div>
     </Router>
