@@ -18,6 +18,7 @@ export default class Search extends Component {
                         placeholder='Search'
                         onChange={this.handleChange}
                         value={query}
+                        spellCheck={false}
                     />
                 </SearchUI>
             </SearchWrapper>

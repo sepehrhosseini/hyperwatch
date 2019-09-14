@@ -9,6 +9,10 @@ export const Search = styled.div`
     border-radius: 4px;
 
     display: inline-flex;
+
+    &:focus-within {
+        background-color: rgba(245, 245, 245, .6);
+    }
 `
 
 export const SearchField = styled.input`
@@ -21,4 +25,11 @@ export const SearchField = styled.input`
 
     font-family: Roboto Condensed;
     font-size: 1.1rem;
+
+    color: #616161;
+
+    &:focus {
+        color: #212121;
+        outline: none;
+    }
 `
