@@ -13,13 +13,15 @@ import rootSaga from './sagas';
 import home from './containers/Home/reducer'
 import header from './containers/Header/reducer'
 import search from './containers/SearchPage/reducer'
+import titles from './containers/Titles/reducer'
 
 const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
     home,
     header,
-    search
+    search,
+    titles,
 })
 
 const store = createStore(

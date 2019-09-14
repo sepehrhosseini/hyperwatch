@@ -15,6 +15,9 @@ import TitleDetail from '../../components/TitleDetail';
 import { connect } from 'react-redux'
 import { Wrapper, List, Card } from './styled'
 import * as Actions from './actions'
+import {
+    getSingle as getSingleTitleAction
+} from '../Titles/actions';
 
 class Home extends Component {
     componentDidMount() {
@@ -65,6 +68,7 @@ class Home extends Component {
 
     render() {
       const { movies, shows, isLoading, singleState } = this.props;
+
       return (
           <Wrapper>
               <Grid container>
@@ -93,9 +97,9 @@ export default connect(state => ({
     movies: state.home.movies,
     shows: state.home.shows,
     isLoading: state.home.isLoading,
-    singleState: state.home.single
+    singleState: state.titles.single
 }), {
     getPopularMovies: Actions.getPopularMovies,
     getPopularShows: Actions.getPopularShows,
-    getSingleTitle: Actions.getSingleTitle
+    getSingleTitle: getSingleTitleAction
 })(Home)
