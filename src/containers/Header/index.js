@@ -24,7 +24,7 @@ class Header extends Component {
             <Wrapper>
                 <Logo>
                     <Link to='/'>
-                        <img src='/assets/images/logo.png' />
+                        <img src='/assets/images/logo@2x.png' width='100%' />
                     </Link>
                 </Logo>
                 <Search

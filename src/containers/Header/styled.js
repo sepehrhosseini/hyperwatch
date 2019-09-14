@@ -12,6 +12,6 @@ export const Wrapper = styled.div`
 `
 
 export const Logo = styled.div`
-    max-width: 300px;
+    max-width: 240px;
     margin-right: 20px;
 `
