@@ -1,105 +1,88 @@
-import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
+
 import Grid from '@material-ui/core/Grid';
-import { map, capitalize } from 'lodash'
 
-import history from '../../history';
-import Search from '../../components/Search';
 import TitleDetail from '../../components/TitleDetail';
+import List from '../../components/List';
 
-import { connect } from 'react-redux'
-import { Wrapper, List, Card } from './styled'
-import * as Actions from './actions'
-import {
-    getSingle as getSingleTitleAction
-} from '../Titles/actions';
+import { Wrapper, Card } from './styled';
+import * as Actions from './actions';
+import { getSingle as fetchSingleTitleAction } from '../Titles/actions';
 
-class Home extends Component {
-    componentDidMount() {
-        const { getPopularMovies, getPopularShows, getSingleTitle, match } = this.props;
+import { addToWatchlist } from '../../utils/api';
 
-        getPopularMovies();
-        getPopularShows();
-
-        if (match.params.title_type && match.params.title_id) {
-            getSingleTitle({
-                type: match.params.title_type,
-                id: match.params.title_id,
-            });
-        }
-    }
-
-    onTitleClick = ({ title, type }) => {
-        const { getSingleTitle } = this.props;
-
-        getSingleTitle({
-            type,
-            id: title.ids.imdb
-        })
-
-        history.push(`/${type}/${title.ids.imdb}`);
-
-    }
-
-    renderList({ movies, shows }) {
-        return map({movies, shows}, (list, title) => {
-            return (
-                <li key={title}>
-                    <ul style={{ backgroundColor: '#fff', padding: 0 }}>
-                        <ListSubheader>
-                            {capitalize(title)}
-                        </ListSubheader>
-
-                        {list.map(item => (
-                            <ListItem key={`item-${title}-${item}`} button onClick={() => this.onTitleClick({ title: item, type: title })}>
-                            <ListItemText primary={item.title} secondary={item.year} />
-                          </ListItem>
-                        ))}
-                    </ul>
-                </li>
-            )
-        })
-    }
-
-    render() {
-      const { movies, shows, isLoading, singleState } = this.props;
-
-      return (
-          <Wrapper>
-              <Grid container>
-                  <Grid md={4} item>
-                    <Card isLoading={isLoading}>
-                        <List subheader={<li />}>
-
-                          { this.renderList({movies, shows}) }
-
-                        </List>
-                    </Card>
-                  </Grid>
-                  <Grid md={8} item>
-                      <TitleDetail
-                          title={singleState.title}
-                          isLoading={singleState.isLoading}
-                      />
-                  </Grid>
-            </Grid>
-          </Wrapper>
-      );
-    }
-};
-
-export default connect(state => ({
+const Home = ({ match }) => {
+  const query = useParams();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { movies, shows, isLoading, singleState } = useSelector((state) => ({
     movies: state.home.movies,
     shows: state.home.shows,
     isLoading: state.home.isLoading,
-    singleState: state.titles.single
-}), {
-    getPopularMovies: Actions.getPopularMovies,
-    getPopularShows: Actions.getPopularShows,
-    getSingleTitle: getSingleTitleAction
-})(Home)
+    singleState: state.titles.single,
+  }));
+
+  const [alertText, setAlertText] = useState(null);
+
+  const fetchPopularMovies = useCallback(() => dispatch(Actions.getPopularMovies()), [dispatch]);
+  const fetchPopularShows = useCallback(() => dispatch(Actions.getPopularShows()), [dispatch]);
+  const fetchSingleTitle = useCallback(({ type, id }) => dispatch(fetchSingleTitleAction({ type, id })), [dispatch]);
+
+  useEffect(() => {
+    fetchPopularMovies();
+    fetchPopularShows();
+  }, [fetchPopularMovies, fetchPopularShows]);
+
+  useEffect(() => {
+    if (!query.title_type || !query.title_id) return;
+
+    fetchSingleTitle({
+      type: query.title_type,
+      id: query.title_id,
+    });
+  }, [fetchSingleTitle, query]);
+
+  const changeAlertText = (text = null) => setAlertText(typeof text === 'string' ? text : null);
+
+  const onTitleClick = ({ title, type }) => {
+    fetchSingleTitle({
+      type,
+      id: title.ids.imdb,
+    });
+
+    history.push(`/${type}/${title.ids.imdb}`);
+  };
+
+  const onSecActionClick = async ({ title, type }) => {
+    await addToWatchlist({ [type]: [title] });
+
+    changeAlertText('Successfully add to watchlist');
+  };
+
+  return (
+    <Wrapper>
+      <Snackbar open={!!alertText} autoHideDuration={6000} onClose={changeAlertText}>
+        <Alert onClose={changeAlertText} severity="success" variant="filled">
+          {alertText}
+        </Alert>
+      </Snackbar>
+      <Grid container>
+        <Grid md={4} item>
+          <Card isLoading={isLoading}>
+            <List data={{ movies, shows }} onSecActionClick={onSecActionClick} onItemClick={onTitleClick} />
+          </Card>
+        </Grid>
+        <Grid md={8} item>
+          <TitleDetail title={singleState.title} isLoading={singleState.isLoading} />
+        </Grid>
+      </Grid>
+    </Wrapper>
+  );
+};
+
+export default Home;

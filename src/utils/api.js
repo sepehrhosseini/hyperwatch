@@ -39,6 +39,15 @@ export const getToken = ({ code } = {}) =>
     redirect_uri: 'http://localhost:3000/auth/token',
     grant_type: 'authorization_code',
   });
+
+export const getWatchlist = ({ type, sort }) => traktAPI.get(`/sync/watchlist/${type}/${sort}`);
+
+export const addToWatchlist = ({ movies, shows, seasons, episodes }) =>
+  traktAPI.post(`/sync/watchlist`, { movies, shows, seasons, episodes });
+
+export const removeFromWatchlist = ({ movies, shows, seasons, episodes }) =>
+  traktAPI.post(`/sync/watchlist/remove`, { movies, shows, seasons, episodes });
+
 export const popularMovies = ({ limit = 30 } = {}) => traktAPI.get(`/movies/popular?limit=${limit}`);
 
 export const popularShows = ({ limit = 30 } = {}) => traktAPI.get(`/shows/popular?limit=${limit}`);
@@ -49,4 +58,4 @@ export const searchShows = ({ query }) => traktAPI.get(`/search/show?query=${que
 
 export const singleTitle = ({ type, id, extended = 'full' }) => traktAPI.get(`/${type}/${id}?extended=${extended}`);
 
-export const singleTitleOMDB = ({ type, id }) => axios.get(`http://www.omdbapi.com/?i=${id}&apikey=caa77635`)
+export const singleTitleOMDB = ({ type, id }) => axios.get(`http://www.omdbapi.com/?i=${id}&apikey=caa77635`);
