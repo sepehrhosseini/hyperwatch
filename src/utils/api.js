@@ -1,4 +1,6 @@
 import axios from 'axios';
+import queryString from 'query-string';
+
 const {
   REACT_APP_TRAKT_API_URL,
   REACT_APP_TRAKT_CLIENT_ID: client_id,
@@ -40,7 +42,8 @@ export const getToken = ({ code } = {}) =>
     grant_type: 'authorization_code',
   });
 
-export const getWatchlist = ({ type, sort }) => traktAPI.get(`/sync/watchlist/${type}/${sort}`);
+export const getWatchlist = ({ type = '', sort = '' } = {}) =>
+  traktAPI.get(`/sync/watchlist/${type}${!!type ? `/${sort}` : ''}`);
 
 export const addToWatchlist = ({ movies, shows, seasons, episodes }) =>
   traktAPI.post(`/sync/watchlist`, { movies, shows, seasons, episodes });
@@ -48,9 +51,11 @@ export const addToWatchlist = ({ movies, shows, seasons, episodes }) =>
 export const removeFromWatchlist = ({ movies, shows, seasons, episodes }) =>
   traktAPI.post(`/sync/watchlist/remove`, { movies, shows, seasons, episodes });
 
-export const popularMovies = ({ limit = 30 } = {}) => traktAPI.get(`/movies/popular?limit=${limit}`);
+export const popularMovies = ({ limit = 30, genres } = {}) =>
+  traktAPI.get(`/movies/popular?${queryString.stringify({ limit, genres })}`);
 
-export const popularShows = ({ limit = 30 } = {}) => traktAPI.get(`/shows/popular?limit=${limit}`);
+export const popularShows = ({ limit = 30, genres } = {}) =>
+  traktAPI.get(`/shows/popular?${queryString.stringify({ limit, genres })}`);
 
 export const searchMovies = ({ query }) => traktAPI.get(`/search/movie?query=${query}`);
 
@@ -59,3 +64,5 @@ export const searchShows = ({ query }) => traktAPI.get(`/search/show?query=${que
 export const singleTitle = ({ type, id, extended = 'full' }) => traktAPI.get(`/${type}/${id}?extended=${extended}`);
 
 export const singleTitleOMDB = ({ type, id }) => axios.get(`http://www.omdbapi.com/?i=${id}&apikey=caa77635`);
+
+export const getGenres = ({ type }) => traktAPI.get(`/genres/${type}`);
