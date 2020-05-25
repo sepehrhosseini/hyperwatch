@@ -1,6 +1,6 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -10,11 +10,20 @@ import Search from '../../components/Search';
 
 import { authorize } from '../../utils/api';
 
-import { updateSearchQuery } from './actions';
+import { updateSearchQuery as updateQueryAction } from './actions';
 
-const Header = ({ updateSearchQueryConnect, searchQuery }) => {
+const selectors = (state) => ({ searchQuery: state.header.searchQuery });
+
+const Header = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { searchQuery } = useSelector(selectors);
+  const updateSearchQuery = useCallback((query) => dispatch(updateQueryAction(query)), [dispatch]);
+
   const handleSearchChange = (query) => {
-    updateSearchQueryConnect(query);
+    updateSearchQuery(query);
+
+    history.push(`/search/${encodeURIComponent(query)}`);
   };
 
   const onLogin = async () => {
@@ -47,11 +56,4 @@ const Header = ({ updateSearchQueryConnect, searchQuery }) => {
   );
 };
 
-export default connect(
-  (state) => ({
-    searchQuery: state.header.searchQuery,
-  }),
-  {
-    updateSearchQueryConnect: updateSearchQuery,
-  }
-)(Header);
+export default Header;

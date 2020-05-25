@@ -5,8 +5,11 @@ import Header from './containers/Header';
 import Home from './containers/Home';
 import SearchPage from './containers/SearchPage';
 import AuthToken from './components/Auth/Token';
+import WatchlistPage from './containers/WatchlistPage';
 
 import history from './history';
+
+import './App.css';
 
 function App() {
   return (
@@ -15,9 +18,16 @@ function App() {
         <Header />
         <Switch>
           <Route path="/search/:query" exact component={SearchPage} />
-          <Route path="/auth/token" exact component={AuthToken} />
+          <Route path="/auth/token" exact>
+            <AuthToken />
+          </Route>
+          <Route path="/watchlist" exact>
+            <WatchlistPage />
+          </Route>
 
-          <Route path="/:title_type?/:title_id?" exact component={Home} />
+          <Route path="/:titleType?/:titleId?" exact>
+            <Home />
+          </Route>
         </Switch>
       </div>
     </Router>

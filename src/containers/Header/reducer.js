@@ -1,18 +1,18 @@
 import { Search } from './actions';
 
 const initialState = {
-    searchQuery: ''
-}
+  searchQuery: '',
+};
 
 export default (state = initialState, action) => {
-    switch (action.type) {
-        case Search.updateQuery:
-            return {
-                ...state,
-                searchQuery: action.query,
-            }
+  switch (action.type) {
+    case Search.updateQuery:
+      return {
+        ...state,
+        searchQuery: action.query,
+      };
 
-        default:
-            return state;
-    }
-}
+    default:
+      return state;
+  }
+};

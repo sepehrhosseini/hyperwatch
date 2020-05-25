@@ -1,27 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import { SearchWrapper, Search as SearchUI, SearchField } from './styled';
 
-export default class Search extends Component {
-    handleChange = ({ target }) => {
-        const { onQueryChange } = this.props;
+const Search = ({ onQueryChange, query }) => {
+  const handleChange = ({ target }) => {
+    onQueryChange(target.value);
+  };
 
-        onQueryChange(target.value);
-    }
+  return (
+    <SearchWrapper>
+      <SearchUI>
+        <SearchField placeholder="Search" onChange={handleChange} value={query} spellCheck={false} />
+      </SearchUI>
+    </SearchWrapper>
+  );
+};
 
-    render() {
-        const { query } = this.props;
+Search.propTypes = {
+  query: PropTypes.string.isRequired,
+  onQueryChange: PropTypes.func.isRequired,
+};
 
-        return (
-            <SearchWrapper>
-                <SearchUI>
-                    <SearchField
-                        placeholder='Search'
-                        onChange={this.handleChange}
-                        value={query}
-                        spellCheck={false}
-                    />
-                </SearchUI>
-            </SearchWrapper>
-        )
-    }
-}
+export default Search;

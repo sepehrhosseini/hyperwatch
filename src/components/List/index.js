@@ -4,16 +4,20 @@ import PropTypes from 'prop-types';
 import { get, map, capitalize } from 'lodash';
 
 import MaterialList from '@material-ui/core/List';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
+import Skeleton from '@material-ui/lab/Skeleton';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 
-const List = ({ data, onItemClick, onSecActionClick, labelAs, keyAs, subtitleAs }) => {
+const progressStyles = {
+  position: 'absolute',
+};
+
+const List = ({ data, onItemClick, onIconClick, labelAs, keyAs, subtitleAs, loadingIds, Icon }) => {
   return map(data, (list, type) => {
     return (
       <MaterialList subheader={<li />} key={type.toString()}>
@@ -28,11 +32,12 @@ const List = ({ data, onItemClick, onSecActionClick, labelAs, keyAs, subtitleAs 
                 onClick={() => onItemClick({ title, type })}
               >
                 <ListItemText primary={title[labelAs]} secondary={title[subtitleAs]} />
-                <ListItemSecondaryAction onClick={() => onSecActionClick({ title, type })}>
-                  <CircularProgress />
-                  <IconButton edge="end">
-                    <StarBorderIcon />
-                  </IconButton>
+                <ListItemSecondaryAction>
+                  {title.isLoading || loadingIds.find((id) => id === get(title, keyAs)) ? (
+                    <CircularProgress size={34} />
+                  ) : (
+                    Icon && <Icon title={title} keyAs={keyAs} type={type} />
+                  )}
                 </ListItemSecondaryAction>
               </ListItem>
             ))}
@@ -47,12 +52,25 @@ List.defaultProps = {
   labelAs: 'title',
   subtitleAs: 'year',
   keyAs: 'ids.trakt',
+
+  loadingIds: [],
+  Icon: null,
+
+  onItemClick: () => {},
+  onSecActionClick: () => {},
 };
 
 List.propTypes = {
   labelAs: PropTypes.string,
   subtitleAs: PropTypes.string,
   keyAs: PropTypes.string,
+
+  loadingIds: PropTypes.arrayOf(PropTypes.number),
+
+  Icon: PropTypes.element,
+
+  onItemClick: PropTypes.func,
+  onSecActionClick: PropTypes.func,
 };
 
 export default List;

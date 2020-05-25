@@ -12,9 +12,8 @@ import { getToken } from '../../utils/api';
 import { useQuery } from '../../utils/router';
 
 const Token = (props) => {
-  const query = useQuery();
+  const { code } = useQuery();
   const history = useHistory();
-  const code = query.get('code');
 
   const fetchToken = useCallback(async () => {
     const {

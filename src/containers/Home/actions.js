@@ -1,87 +1,63 @@
-export const Movies = {
-    getPopular:         'Hyperwatch/Movies/GET_POPULAR',
-    getPopularSuccess:  'Hyperwatch/Movies/GET_POPULAR_SUCCESS',
-    getPopularFailed:   'Hyperwatch/Movies/GET_POPULAR_FAILED',
+import { uniqBy } from 'lodash';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  addToWatchlist as addToWatchlistAPI,
+  removeFromWatchlist as removeFromWatchlistAPI,
+  getWatchlist as getWatchlistAPI,
+  getGenres as getGenresAPI,
+  popularMovies,
+  popularShows,
+  singleTitle,
+  singleTitleOMDB,
+} from '../../utils/api';
 
-    getSingle:          'Hyperwatch/Movies/GET_SINGLE',
-    getSingleSuccess:   'Hyperwatch/Movies/GET_SINGLE_SUCCESS',
-    getSingleFailed:    'Hyperwatch/Movies/GET_SINGLE_FAILED',
-}
+export const getPopular = createAsyncThunk('getPopular', async () => {
+  const [{ data: movies }, { data: shows }] = await Promise.all([popularMovies(), popularShows()]);
 
-export const Shows = {
-    getPopular:         'Hyperwatch/Shows/GET_POPULAR',
-    getPopularSuccess:  'Hyperwatch/Shows/GET_POPULAR_SUCCESS',
-    getPopularFailed:   'Hyperwatch/Shows/GET_POPULAR_FAILED',
+  return { movies, shows };
+});
 
-    getSingle:          'Hyperwatch/Shows/GET_SINGLE',
-    getSingleSuccess:   'Hyperwatch/Shows/GET_SINGLE_SUCCESS',
-    getSingleFailed:    'Hyperwatch/Shows/GET_SINGLE_FAILED',
-}
+export const getWatchlist = createAsyncThunk('watchlist', async () => {
+  const { data } = await getWatchlistAPI();
+  return data;
+});
 
-export const Title = {
-    getSingle:          'Hyperwatch/Title/GET_SINGLE',
-    getSingleSuccess:   'Hyperwatch/Title/GET_SINGLE_SUCCESS',
-    getSingleFailed:    'Hyperwatch/Title/GET_SINGLE_FAILED',
-}
+export const addToWatchlist = createAsyncThunk(
+  'watchlist/add',
+  async ({ movies, shows, episodes, seasons }, thunkApi) => {
+    await addToWatchlistAPI({ movies, shows, episodes, seasons });
+    thunkApi.dispatch(getWatchlist());
+  }
+);
 
-export function getPopularMovies() {
-    return {
-        type: Movies.getPopular,
-    }
-}
+export const removeFromWatchlist = createAsyncThunk(
+  'watchlist/remove',
+  async ({ movies, shows, episodes, seasons }, thunkApi) => {
+    await removeFromWatchlistAPI({ movies, shows, episodes, seasons });
+    thunkApi.dispatch(getWatchlist());
+  }
+);
 
-export function getPopularMoviesSuccess(movies) {
-    return {
-        type: Movies.getPopularSuccess,
-        movies,
-    }
-}
+export const getGenres = createAsyncThunk('genres/get', async () => {
+  const [{ data: moviesGenres }, { data: showsGenres }] = await Promise.all([
+    getGenresAPI({ type: 'movies' }),
+    getGenresAPI({ type: 'shows' }),
+  ]);
 
-export function getPopularMoviesFailed(error) {
-    return {
-        type: Movies.getPopularFailed,
-        error,
-    }
-}
+  const genres = uniqBy([...moviesGenres, ...showsGenres], 'slug');
+  return genres;
+});
 
-export function getPopularShows() {
-    return {
-        type: Shows.getPopular,
-    }
-}
+export const selectGenre = createAsyncThunk('genres/select', async (genre) => {
+  const filter = { genres: [genre] };
+  const [{ data: movies }, { data: shows }] = await Promise.all([popularMovies(filter), popularShows(filter)]);
 
-export function getPopularShowsSuccess(shows) {
-    return {
-        type: Shows.getPopularSuccess,
-        shows,
-    }
-}
+  return { movies, shows };
+});
 
-export function getPopularShowsFailed(error) {
-    return {
-        type: Shows.getPopularFailed,
-        error,
-    }
-}
+export const getSingle = createAsyncThunk('title/single', async ({ id, type }) => {
+  const { data: title } = await singleTitle({ type, id });
+  const { data: titleOMDB } = await singleTitleOMDB({ id });
 
-export function getSingleTitle({ type, id }) {
-    return {
-        type: Title.getSingle,
-        titleType: type,
-        id,
-    }
-}
-
-export function getSingleTitleSuccess(title) {
-    return {
-        type: Title.getSingleSuccess,
-        title,
-    }
-}
-
-export function getSingleTitleFailed(error) {
-    return {
-        type: Title.getSingleFailed,
-        error
-    }
-}
+  return { ...title, ...titleOMDB };
+});
