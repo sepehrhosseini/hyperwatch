@@ -10,6 +10,7 @@ export default {
   arrows: true,
   draggable: false,
   infinite: false,
+  adaptiveHeight: true,
   prevArrow: (
     <div className="prevvvvvi">
       <IconButton>
