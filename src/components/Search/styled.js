@@ -1,35 +1,35 @@
 import styled from 'styled-components';
 
 export const SearchWrapper = styled.div`
-    margin-left: 30px;
-`
+  margin-left: 30px;
+`;
 
 export const Search = styled.div`
-    background-color: #f5f5f5;
-    border-radius: 4px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
 
-    display: inline-flex;
+  display: inline-flex;
 
-    &:focus-within {
-        background-color: rgba(245, 245, 245, .6);
-    }
-`
+  &:focus-within {
+    background-color: rgba(245, 245, 245, 0.6);
+  }
+`;
 
 export const SearchField = styled.input`
-    padding: 13px 25px;
+  padding: 13px 25px;
 
-    background-color: rgba(0,0,0,0);
-    border: none;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
 
-    appearance: none;
+  appearance: none;
 
-    font-family: Roboto Condensed;
-    font-size: 1.1rem;
+  font-family: Roboto Condensed;
+  font-size: 1.1rem;
 
-    color: #616161;
+  color: #616161;
 
-    &:focus {
-        color: #212121;
-        outline: none;
-    }
-`
+  &:focus {
+    color: #212121;
+    outline: none;
+  }
+`;

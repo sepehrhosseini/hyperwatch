@@ -2,8 +2,8 @@ import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import TitlesGrid from '../../components/TitlesGrid';
 import { get, mapValues } from 'lodash';
+import TitlesGrid from '../../components/TitlesGrid';
 
 import { updateSearchQuery as updateQueryAction } from '../Header/actions';
 
@@ -17,9 +17,14 @@ const selectors = (state) => ({
 
 const SearchPage = () => {
   const params = useParams();
-  const { query, movies, shows, isLoading, single } = useSelector(selectors);
+  const { query, movies, shows, isLoading, single } = useSelector(
+    selectors,
+  );
   const dispatch = useDispatch();
-  const updateQuery = useCallback((query, force) => dispatch(updateQueryAction(query, force)), [dispatch]);
+  const updateQuery = useCallback(
+    (query, force) => dispatch(updateQueryAction(query, force)),
+    [dispatch],
+  );
 
   const queryInURL = get(params, 'query');
 
@@ -34,7 +39,11 @@ const SearchPage = () => {
 
   return (
     <div>
-      <TitlesGrid data={data} listIsLoading={isLoading} singleState={single} />
+      <TitlesGrid
+        data={data}
+        listIsLoading={isLoading}
+        singleState={single}
+      />
     </div>
   );
 };

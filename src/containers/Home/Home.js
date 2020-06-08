@@ -22,15 +22,25 @@ const Home = () => {
     shows,
     isLoading,
     singleState,
-    genres: { isLoading: genresIsLoading, data: genres, selectedSlug: selectedGenre },
+    genres: {
+      isLoading: genresIsLoading,
+      data: genres,
+      selectedSlug: selectedGenre,
+    },
     watchlist: { data: watchlist, loadingIds: watchlistLoadingIds },
   } = useSelector(selectors);
 
   const loadingIds = [...watchlistLoadingIds];
 
-  const fetchPopular = useCallback(() => dispatch(getPopular()), [dispatch]);
-  const fetchWatchlist = useCallback(() => dispatch(getWatchlist()), [dispatch]);
-  const fetchGenres = useCallback(() => dispatch(getGenres()), [dispatch]);
+  const fetchPopular = useCallback(() => dispatch(getPopular()), [
+    dispatch,
+  ]);
+  const fetchWatchlist = useCallback(() => dispatch(getWatchlist()), [
+    dispatch,
+  ]);
+  const fetchGenres = useCallback(() => dispatch(getGenres()), [
+    dispatch,
+  ]);
 
   useEffect(() => {
     fetchPopular();
@@ -40,7 +50,11 @@ const Home = () => {
 
   return (
     <div>
-      <GenresSlider selectedGenre={selectedGenre} isLoading={genresIsLoading} genres={genres} />
+      <GenresSlider
+        selectedGenre={selectedGenre}
+        isLoading={genresIsLoading}
+        genres={genres}
+      />
       <TitlesGrid
         data={{ movies, shows }}
         listIsLoading={isLoading}

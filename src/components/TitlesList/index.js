@@ -14,10 +14,14 @@ import List from '../List';
 import { useQueryParams } from '../../utils/router';
 
 import { getSingle as fetchSingleTitleAction } from '../../containers/Titles/actions';
-import { addToWatchlist, removeFromWatchlist } from '../../containers/Home/actions';
+import {
+  addToWatchlist,
+  removeFromWatchlist,
+} from '../../containers/Home/actions';
 
 const getUrl = ({ title, type, params }) => {
-  if (params.query) return `/search/${params.query}?titleType=${type}&titleId=${title.ids.imdb}`;
+  if (params.query)
+    return `/search/${params.query}?titleType=${type}&titleId=${title.ids.imdb}`;
 
   return `/${type}/${title.ids.imdb}`;
 };
@@ -37,7 +41,10 @@ const TitlesList = ({ data, onItemClick, onIconClick }) => {
 
   const loadingIds = [...watchlistLoadingIds];
 
-  const fetchSingleTitle = useCallback(({ type, id }) => dispatch(fetchSingleTitleAction({ type, id })), [dispatch]);
+  const fetchSingleTitle = useCallback(
+    ({ type, id }) => dispatch(fetchSingleTitleAction({ type, id })),
+    [dispatch],
+  );
 
   useEffect(() => {
     if (!params.titleType || !params.titleId) return;
@@ -66,24 +73,39 @@ const TitlesList = ({ data, onItemClick, onIconClick }) => {
     const alreadyInWatchlist = watchlistIds.includes(title.ids.trakt);
     const payload = { [type]: [title] };
 
-    if (alreadyInWatchlist) return dispatch(removeFromWatchlist(payload));
+    if (alreadyInWatchlist)
+      return dispatch(removeFromWatchlist(payload));
 
     dispatch(addToWatchlist(payload));
 
     onIconClick();
   };
 
-  const watchlistIds = watchlist.map((title) => get(title, [title.type, 'ids', 'trakt']));
+  const watchlistIds = watchlist.map((title) =>
+    get(title, [title.type, 'ids', 'trakt']),
+  );
 
   const Icon = ({ title, type, keyAs }) => (
-    <IconButton edge="end" onClick={() => handleIconClick({ title, type })}>
-      {watchlistIds.find((id) => id === get(title, keyAs)) ? <StarIcon /> : <StarBorderIcon />}
+    <IconButton
+      edge="end"
+      onClick={() => handleIconClick({ title, type })}
+    >
+      {watchlistIds.find((id) => id === get(title, keyAs)) ? (
+        <StarIcon />
+      ) : (
+        <StarBorderIcon />
+      )}
     </IconButton>
   );
 
   return (
     <div>
-      <List data={data} onItemClick={handleItemClick} Icon={Icon} loadingIds={loadingIds} />
+      <List
+        data={data}
+        onItemClick={handleItemClick}
+        Icon={Icon}
+        loadingIds={loadingIds}
+      />
     </div>
   );
 };

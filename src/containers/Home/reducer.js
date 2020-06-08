@@ -1,4 +1,4 @@
-import { pick, merge } from 'lodash';
+import { pick, merge, get } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import {
   addToWatchlist,
@@ -9,7 +9,6 @@ import {
   getPopular,
   getSingle,
 } from './actions';
-import { get } from 'lodash';
 
 const slice = createSlice({
   name: 'home',
@@ -45,7 +44,9 @@ const slice = createSlice({
       const ids = Object.values(action.meta.arg)
         .flat()
         .map((title) => get(title, 'ids.trakt'));
-      state.watchlist.loadingIds = state.watchlist.loadingIds.filter((id) => !ids.includes(id));
+      state.watchlist.loadingIds = state.watchlist.loadingIds.filter(
+        (id) => !ids.includes(id),
+      );
     },
     [addToWatchlist.pending]: (state, action) => {
       const ids = Object.values(action.meta.arg)
@@ -61,7 +62,9 @@ const slice = createSlice({
       const ids = Object.values(action.meta.arg)
         .flat()
         .map((title) => get(title, 'ids.trakt'));
-      state.watchlist.loadingIds = state.watchlist.loadingIds.filter((id) => !ids.includes(id));
+      state.watchlist.loadingIds = state.watchlist.loadingIds.filter(
+        (id) => !ids.includes(id),
+      );
       state.watchlist.isLoading = false;
     },
     [removeFromWatchlist.pending]: (state, action) => {
@@ -76,7 +79,9 @@ const slice = createSlice({
       const ids = Object.values(action.meta.arg)
         .flat()
         .map((title) => get(title, 'ids.trakt'));
-      state.watchlist.loadingIds = state.watchlist.loadingIds.filter((id) => !ids.includes(id));
+      state.watchlist.loadingIds = state.watchlist.loadingIds.filter(
+        (id) => !ids.includes(id),
+      );
       state.watchlist.isLoading = false;
     },
     [getWatchlist.fulfilled]: (state, action) => {

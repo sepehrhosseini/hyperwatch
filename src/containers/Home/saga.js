@@ -1,5 +1,11 @@
 import { takeEvery, call, put, all } from 'redux-saga/effects';
-import { popularMovies, popularShows, singleTitle, singleTitleOMDB, getWatchlist } from '../../utils/api';
+import {
+  popularMovies,
+  popularShows,
+  singleTitle,
+  singleTitleOMDB,
+  getWatchlist,
+} from '../../utils/api';
 
 import {
   getPopularMoviesSuccess,
@@ -11,10 +17,15 @@ import {
   Shows,
   Title,
 } from './actions';
+
 function* fetchSingle({ titleType, id }) {
   try {
-    const title = yield singleTitle({ type: titleType, id }).then((res) => res.data);
-    const titleOMDB = yield singleTitleOMDB({ id }).then(({ data }) => data);
+    const title = yield singleTitle({ type: titleType, id }).then(
+      (res) => res.data,
+    );
+    const titleOMDB = yield singleTitleOMDB({ id }).then(
+      ({ data }) => data,
+    );
 
     yield put(getSingleTitleSuccess({ ...title, ...titleOMDB }));
   } catch (error) {

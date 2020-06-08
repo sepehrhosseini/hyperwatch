@@ -45,9 +45,17 @@ function Nav({ login }) {
               SH
             </Avatar>
           </IconButton>
-          <Menu id="simple-menu" anchorEl={menuAnchor} keepMounted open={!!menuAnchor} onClose={closeMenu}>
+          <Menu
+            id="simple-menu"
+            anchorEl={menuAnchor}
+            keepMounted
+            open={!!menuAnchor}
+            onClose={closeMenu}
+          >
             {navItems.map((item) => {
-              const linkProps = item.to ? { to: item.to, component: Link } : {};
+              const linkProps = item.to
+                ? { to: item.to, component: Link }
+                : {};
               return (
                 <MenuItem
                   key={item.label.toString()}

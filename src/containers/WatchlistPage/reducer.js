@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getWatchlist } from '../../utils/api';
 
-const fetchData = createAsyncThunk('watchlist/fetchData', async (thunkApi) => {
-  const { data: watchlist } = await getWatchlist();
-  return watchlist;
-});
+const fetchData = createAsyncThunk(
+  'watchlist/fetchData',
+  async (thunkApi) => {
+    const { data: watchlist } = await getWatchlist();
+    return watchlist;
+  },
+);
 
 const slice = createSlice({
   name: 'Watchlist',

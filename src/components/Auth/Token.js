@@ -33,7 +33,13 @@ const Token = (props) => {
     <div>
       <Card style={{ maxWidth: 300, margin: '5rem auto' }}>
         <CardContent>
-          <Grid container direction="column" alignItems="center" justify="center" spacing={4}>
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justify="center"
+            spacing={4}
+          >
             <Grid item>
               <CircularProgress />
             </Grid>

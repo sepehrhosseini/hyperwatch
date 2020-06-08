@@ -7,11 +7,18 @@ export const Wrapper = styled.div`
   margin: 5rem auto 0;
 `;
 
-export const Card = ({ isLoading, children, placeholder, ...props }) => {
+export const Card = ({
+  isLoading,
+  children,
+  placeholder,
+  ...props
+}) => {
   return (
     <CardUI isLoading={isLoading} {...props}>
       {isLoading && <CircularProgress />}
-      {!isLoading && placeholder && <PlaceholderText>{placeholder}</PlaceholderText>}
+      {!isLoading && placeholder && (
+        <PlaceholderText>{placeholder}</PlaceholderText>
+      )}
       {!isLoading && !placeholder && children}
     </CardUI>
   );

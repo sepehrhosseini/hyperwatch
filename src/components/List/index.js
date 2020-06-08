@@ -17,7 +17,16 @@ const progressStyles = {
   position: 'absolute',
 };
 
-const List = ({ data, onItemClick, onIconClick, labelAs, keyAs, subtitleAs, loadingIds, Icon }) => {
+const List = ({
+  data,
+  onItemClick,
+  onIconClick,
+  labelAs,
+  keyAs,
+  subtitleAs,
+  loadingIds,
+  Icon,
+}) => {
   return map(data, (list, type) => {
     return (
       <MaterialList subheader={<li />} key={type.toString()}>
@@ -31,12 +40,20 @@ const List = ({ data, onItemClick, onIconClick, labelAs, keyAs, subtitleAs, load
                 button
                 onClick={() => onItemClick({ title, type })}
               >
-                <ListItemText primary={title[labelAs]} secondary={title[subtitleAs]} />
+                <ListItemText
+                  primary={title[labelAs]}
+                  secondary={title[subtitleAs]}
+                />
                 <ListItemSecondaryAction>
-                  {title.isLoading || loadingIds.find((id) => id === get(title, keyAs)) ? (
+                  {title.isLoading ||
+                  loadingIds.find(
+                    (id) => id === get(title, keyAs),
+                  ) ? (
                     <CircularProgress size={34} />
                   ) : (
-                    Icon && <Icon title={title} keyAs={keyAs} type={type} />
+                    Icon && (
+                      <Icon title={title} keyAs={keyAs} type={type} />
+                    )
                   )}
                 </ListItemSecondaryAction>
               </ListItem>

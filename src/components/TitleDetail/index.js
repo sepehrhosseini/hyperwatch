@@ -8,16 +8,35 @@ import { GlobalStyles, Card } from '../../containers/Home/styled';
 export function LeftColComponent({ title, ...props }) {
   return (
     <LeftCol>
-      <Grid container direction="column" justify="space-between" style={{ height: '100%' }}>
+      <Grid
+        container
+        direction="column"
+        justify="space-between"
+        style={{ height: '100%' }}
+      >
         <Grid item>
           <Title>{get(title, 'title')}</Title>
           <Subtitle>{get(title, 'year')}</Subtitle>
         </Grid>
         <Grid item>
-          <div style={{ color: '#6A6A6A', fontSize: 23, fontFamily: 'Roboto Condensed' }}>{get(title, 'Director')}</div>
+          <div
+            style={{
+              color: '#6A6A6A',
+              fontSize: 23,
+              fontFamily: 'Roboto Condensed',
+            }}
+          >
+            {get(title, 'Director')}
+          </div>
 
           <div
-            style={{ color: '#6A6A6A', fontSize: 23, fontWeight: 100, fontFamily: 'Roboto Condensed', marginTop: 27 }}
+            style={{
+              color: '#6A6A6A',
+              fontSize: 23,
+              fontWeight: 100,
+              fontFamily: 'Roboto Condensed',
+              marginTop: 27,
+            }}
           >
             {get(title, 'Actors')}
           </div>
@@ -27,7 +46,11 @@ export function LeftColComponent({ title, ...props }) {
   );
 }
 
-export default function TitleDetail({ title, isLoading = false, ...props }) {
+export default function TitleDetail({
+  title,
+  isLoading = false,
+  ...props
+}) {
   return (
     <Wrapper>
       <GlobalStyles />
@@ -42,7 +65,14 @@ export default function TitleDetail({ title, isLoading = false, ...props }) {
           <Grid xs={6} item>
             <LeftColComponent title={title} />
           </Grid>
-          <Grid xs={6} item style={{ backgroundImage: `url(${get(title, 'Poster')})`, backgroundSize: 'cover' }}></Grid>
+          <Grid
+            xs={6}
+            item
+            style={{
+              backgroundImage: `url(${get(title, 'Poster')})`,
+              backgroundSize: 'cover',
+            }}
+          />
         </Grid>
       </Card>
     </Wrapper>

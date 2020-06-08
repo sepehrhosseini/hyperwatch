@@ -43,7 +43,15 @@ const GenresSlider = ({ genres, isLoading, selectedGenre }) => {
             return (
               <div>
                 <div className={styles.slide}>
-                  <Card className={[styles.card, { [styles.card_active]: selectedGenre === genre.slug }]}>
+                  <Card
+                    className={[
+                      styles.card,
+                      {
+                        [styles.card_active]:
+                          selectedGenre === genre.slug,
+                      },
+                    ]}
+                  >
                     <CardActionArea onClick={() => onClick(genre)}>
                       <Title>{genre.name}</Title>
                     </CardActionArea>

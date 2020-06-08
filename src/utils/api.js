@@ -26,11 +26,15 @@ export default traktAPI;
 
 export const authorize = ({ redirectUrl } = {}) => {
   const params = new URLSearchParams({
-    redirect_uri: `http://localhost:3000${redirectUrl}` || 'http://localhost:3000',
+    redirect_uri:
+      `http://localhost:3000${redirectUrl}` ||
+      'http://localhost:3000',
     response_type: 'code',
     client_id,
   }).toString();
-  return `${REACT_APP_TRAKT_LOGIN_HOSTNAME || 'https://trakt.tv'}/oauth/authorize?${params}`;
+  return `${
+    REACT_APP_TRAKT_LOGIN_HOSTNAME || 'https://trakt.tv'
+  }/oauth/authorize?${params}`;
 };
 
 export const getToken = ({ code } = {}) =>
@@ -43,26 +47,55 @@ export const getToken = ({ code } = {}) =>
   });
 
 export const getWatchlist = ({ type = '', sort = '' } = {}) =>
-  traktAPI.get(`/sync/watchlist/${type}${!!type ? `/${sort}` : ''}`);
+  traktAPI.get(`/sync/watchlist/${type}${type ? `/${sort}` : ''}`);
 
-export const addToWatchlist = ({ movies, shows, seasons, episodes }) =>
-  traktAPI.post(`/sync/watchlist`, { movies, shows, seasons, episodes });
+export const addToWatchlist = ({
+  movies,
+  shows,
+  seasons,
+  episodes,
+}) =>
+  traktAPI.post(`/sync/watchlist`, {
+    movies,
+    shows,
+    seasons,
+    episodes,
+  });
 
-export const removeFromWatchlist = ({ movies, shows, seasons, episodes }) =>
-  traktAPI.post(`/sync/watchlist/remove`, { movies, shows, seasons, episodes });
+export const removeFromWatchlist = ({
+  movies,
+  shows,
+  seasons,
+  episodes,
+}) =>
+  traktAPI.post(`/sync/watchlist/remove`, {
+    movies,
+    shows,
+    seasons,
+    episodes,
+  });
 
 export const popularMovies = ({ limit = 30, genres } = {}) =>
-  traktAPI.get(`/movies/popular?${queryString.stringify({ limit, genres })}`);
+  traktAPI.get(
+    `/movies/popular?${queryString.stringify({ limit, genres })}`,
+  );
 
 export const popularShows = ({ limit = 30, genres } = {}) =>
-  traktAPI.get(`/shows/popular?${queryString.stringify({ limit, genres })}`);
+  traktAPI.get(
+    `/shows/popular?${queryString.stringify({ limit, genres })}`,
+  );
 
-export const searchMovies = ({ query }) => traktAPI.get(`/search/movie?query=${query}`);
+export const searchMovies = ({ query }) =>
+  traktAPI.get(`/search/movie?query=${query}`);
 
-export const searchShows = ({ query }) => traktAPI.get(`/search/show?query=${query}`);
+export const searchShows = ({ query }) =>
+  traktAPI.get(`/search/show?query=${query}`);
 
-export const singleTitle = ({ type, id, extended = 'full' }) => traktAPI.get(`/${type}/${id}?extended=${extended}`);
+export const singleTitle = ({ type, id, extended = 'full' }) =>
+  traktAPI.get(`/${type}/${id}?extended=${extended}`);
 
-export const singleTitleOMDB = ({ type, id }) => axios.get(`http://www.omdbapi.com/?i=${id}&apikey=caa77635`);
+export const singleTitleOMDB = ({ type, id }) =>
+  axios.get(`http://www.omdbapi.com/?i=${id}&apikey=caa77635`);
 
-export const getGenres = ({ type }) => traktAPI.get(`/genres/${type}`);
+export const getGenres = ({ type }) =>
+  traktAPI.get(`/genres/${type}`);
