@@ -19,15 +19,15 @@ const SearchPage = () => {
   const params = useParams();
   const { query, movies, shows, isLoading, single } = useSelector(selectors);
   const dispatch = useDispatch();
-  const updateQuery = useCallback((query) => dispatch(updateQueryAction(query)), [dispatch]);
+  const updateQuery = useCallback((query, force) => dispatch(updateQueryAction(query, force)), [dispatch]);
 
   const queryInURL = get(params, 'query');
 
   useEffect(() => {
     if (!queryInURL || queryInURL === query) return;
 
-    updateQuery(queryInURL);
-  }, [queryInURL, query, updateQuery]);
+    updateQuery(queryInURL, true);
+  }, []);
 
   const flatData = (list) => list.map((item) => item[item.type]);
   const data = mapValues({ movies, shows }, flatData);

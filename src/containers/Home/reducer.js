@@ -96,7 +96,6 @@ const slice = createSlice({
       state.genres.selectedSlug = action.meta.arg;
     },
     [selectGenre.fulfilled]: (state, action) => {
-      console.log('action: ', action);
       merge(state, pick(action.payload, ['movies', 'shows']));
     },
     [getPopular.pending]: (state) => {
