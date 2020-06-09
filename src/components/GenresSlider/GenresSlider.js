@@ -9,8 +9,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 // @slick
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 // Action
 import { selectGenre } from '../../containers/Home/actions';
