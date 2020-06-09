@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import TitlesGrid from '../../components/TitlesGrid';
 import GenresSlider from '../../components/GenresSlider';
+import Showcase from '../../components/Showcase';
 
 import { getWatchlist, getGenres, getPopular } from './actions';
 
@@ -61,6 +62,7 @@ const Home = () => {
         loadingIds={loadingIds}
         singleState={singleState}
       />
+      <Showcase />
     </div>
   );
 };
