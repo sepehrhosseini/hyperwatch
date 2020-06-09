@@ -1,5 +1,4 @@
-import { combineReducers } from 'redux';
-
+/* eslint-disable global-require */
 // Redux Toolkit
 import {
   configureStore,
@@ -10,28 +9,24 @@ import {
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 
-// Reducers
-import home from './containers/Home/reducer';
-import header from './containers/Header/reducer';
-import search from './containers/SearchPage/reducer';
-import titles from './containers/Titles/reducer';
-import watchlist from './containers/WatchlistPage/reducer';
+import rootReducer from './reducer';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const rootReducer = combineReducers({
-  home,
-  header,
-  search,
-  titles,
-  watchlist,
-});
-
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: [sagaMiddleware, ...getDefaultMiddleware()],
-});
-
-sagaMiddleware.run(rootSaga);
+const store = () => {
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware: [sagaMiddleware, ...getDefaultMiddleware()],
+  });
+  sagaMiddleware.run(rootSaga);
+  if (process.env.NODE_ENV !== 'production') {
+    if (module.hot) {
+      module.hot.accept('./reducer', () => {
+        store.replaceReducer(require('./reducer'));
+      });
+    }
+  }
+  return store;
+};
 
 export default store;
