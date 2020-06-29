@@ -1,9 +1,9 @@
 import React from 'react';
 
-// @slick
-import Slider from 'react-slick';
+import { Link } from 'react-router-dom';
 
-import { Slide, Card, CardBg } from './styled';
+import { Wrapper, Slider, Slide, Card, CardBg } from './styled';
+import Container from '../../utils/Container';
 
 import styles from './Showcase.module.css';
 
@@ -12,16 +12,22 @@ const items = [
     title: 'Put on a happy face',
     img: '/assets/images/joker.jpg',
     size: 45,
+    type: 'movies',
+    id: 'tt7286456',
   },
   {
     title: 'I drink and I know things',
     img: '/assets/images/got.jpg',
     size: 30,
+    type: 'shows',
+    id: 'tt0944947',
   },
   {
     title: 'Fooking Blinders',
     img: '/assets/images/peaky.jpg',
     size: 25,
+    type: 'shows',
+    id: 'tt2442560',
   },
 ];
 
@@ -32,7 +38,7 @@ const sliderOptions = {
   infinite: false,
   responsive: [
     {
-      breakpoint: 1100,
+      breakpoint: 992,
       settings: {
         slidesToShow: 1,
       },
@@ -42,11 +48,15 @@ const sliderOptions = {
 
 export default function Showcase() {
   return (
-    <div className={styles.wrapper}>
+    <Container style={{ marginTop: 100 }}>
       <Slider {...sliderOptions}>
         {items.map((item) => {
           return (
-            <Slide size={item.size}>
+            <Slide
+              size={item.size}
+              as={Link}
+              to={`/${item.type}/${item.id}`}
+            >
               <Card>
                 <CardBg>
                   <img
@@ -63,6 +73,6 @@ export default function Showcase() {
           );
         })}
       </Slider>
-    </div>
+    </Container>
   );
 }

@@ -12,15 +12,26 @@ body {
   font-family: 'Asap', sans-serif;
 }
 
-.slick-arrow {
-  width: 48px;
-  height: 48px;
+/* Reset Slick styles */
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.slick-track {
+  width: 20000px !important;
+}
+
+.slick-slide,
+.slick-slide * {
+  outline: none !important;
+}
+
+.slick-arrow {
+  width: 48px !important;
+  height: 48px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .slick-arrow:before {
-  content: none;
+  content: none !important;
 }

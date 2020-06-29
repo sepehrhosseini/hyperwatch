@@ -1,5 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 import styled from 'styled-components';
+import SlickSlider from 'react-slick';
+
+export const Wrapper = styled.div`
+  margin: 5rem 0 3rem;
+  overflow: hidden;
+`;
+
+export const Slider = styled(SlickSlider)``;
 
 export const CardBg = styled.div`
   position: absolute;
@@ -54,9 +62,27 @@ export const Card = styled.div`
 
 export const Slide = styled.div`
   width: ${(props) => props.size || 10}vw !important;
+
+  max-width: 60vw;
   padding: 0 2rem;
 
   @media (max-width: 992px) {
     width: ${(props) => (props.size || 10) * 2}vw !important;
+  }
+
+  @media (max-width: 768px) {
+    width: 350px !important;
+    max-width: none;
+  }
+
+  .slick-slide:first-of-type & {
+    padding-left: 0;
+  }
+
+  &,
+  *,
+  a {
+    user-select: none !important;
+    user-drag: none !important;
   }
 `;

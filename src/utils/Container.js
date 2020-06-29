@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import MdContainer from '@material-ui/core/Container';
 
-const Container = ({ children, maxWidth }) => {
-  return <MdContainer>{children}</MdContainer>;
+const Container = ({ children, maxWidth, ...rest }) => {
+  return <MdContainer {...rest}>{children}</MdContainer>;
 };
 
 Container.defaultProps = {
