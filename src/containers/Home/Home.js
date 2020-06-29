@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import TitlesGrid from '../../components/TitlesGrid';
 import GenresSlider from '../../components/GenresSlider';
 import Showcase from '../../components/Showcase';
+import Quote from '../../components/Quote';
 
 import { getWatchlist, getGenres, getPopular } from './actions';
 
@@ -63,6 +64,7 @@ const Home = () => {
         singleState={singleState}
       />
       <Showcase />
+      <Quote />
     </div>
   );
 };
