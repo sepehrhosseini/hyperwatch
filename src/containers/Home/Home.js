@@ -68,6 +68,7 @@ const Home = () => {
       <Quote />
       <Showcase type={2} boxed={false} />
       <Features />
+      <Quote type={2} boxed={false} />
     </div>
   );
 };

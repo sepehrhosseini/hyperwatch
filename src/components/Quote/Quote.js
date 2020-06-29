@@ -1,20 +1,34 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Wrapper, Content, Title, Subtitle } from './styled';
 
-import Container from '../../utils/Container';
+import ContainerUI from '../../utils/Container';
 
-const Quote = (props) => {
+const Quote = ({ type, boxed }) => {
+  const Container = boxed ? ContainerUI : 'div';
   return (
     <Container>
-      <Wrapper>
+      <Wrapper type={type}>
         <Content>
-          <Title>Drama is life with the dull bits cut out.</Title>
-          <Subtitle>Alfred Hitchcock</Subtitle>
+          <Title type={type}>
+            Drama is life with the dull bits cut out.
+          </Title>
+          <Subtitle type={type}>Alfred Hitchcock</Subtitle>
         </Content>
       </Wrapper>
     </Container>
   );
+};
+
+Quote.propTypes = {
+  type: PropTypes.number,
+  boxed: PropTypes.bool,
+};
+
+Quote.defaultProps = {
+  type: 1,
+  boxed: true,
 };
 
 export default Quote;
