@@ -65,6 +65,7 @@ const Home = () => {
       />
       <Showcase />
       <Quote />
+      <Showcase type={2} boxed={false} />
     </div>
   );
 };

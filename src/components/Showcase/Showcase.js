@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
 import { Wrapper, Slider, Slide, Card, CardBg } from './styled';
-import Container from '../../utils/Container';
+import ContainerUI from '../../utils/Container';
 
 import styles from './Showcase.module.css';
 
@@ -42,6 +43,7 @@ const sliderOptions = {
       breakpoint: 992,
       settings: {
         centerMode: true,
+        infinite: true,
         dots: true,
         slidesToShow: 1,
       },
@@ -49,33 +51,47 @@ const sliderOptions = {
   ],
 };
 
-export default function Showcase() {
+export default function Showcase({ type, boxed }) {
+  const Container = boxed ? ContainerUI : 'div';
   return (
-    <Container style={{ marginTop: 100 }}>
-      <Slider {...sliderOptions}>
-        {items.map((item) => {
-          return (
-            <Slide
-              size={item.size}
-              as={Link}
-              to={`/${item.type}/${item.id}`}
-            >
-              <Card>
-                <CardBg>
-                  <img
-                    className={styles.bgImg}
-                    src={item.img}
-                    alt={item.title}
-                  />
-                </CardBg>
-                <div className={styles.content}>
-                  <div className={styles.title}>{item.title}</div>
-                </div>
-              </Card>
-            </Slide>
-          );
-        })}
-      </Slider>
+    <Container>
+      <Wrapper type={type}>
+        <Slider {...sliderOptions}>
+          {items.map((item) => {
+            return (
+              <Slide
+                size={item.size}
+                as={Link}
+                to={`/${item.type}/${item.id}`}
+                type={type}
+              >
+                <Card type={type}>
+                  <CardBg>
+                    <img
+                      className={styles.bgImg}
+                      src={item.img}
+                      alt={item.title}
+                    />
+                  </CardBg>
+                  <div className={styles.content}>
+                    <div className={styles.title}>{item.title}</div>
+                  </div>
+                </Card>
+              </Slide>
+            );
+          })}
+        </Slider>
+      </Wrapper>
     </Container>
   );
 }
+
+Showcase.propTypes = {
+  type: PropTypes.number,
+  boxed: PropTypes.bool,
+};
+
+Showcase.defaultProps = {
+  type: 1,
+  boxed: true,
+};

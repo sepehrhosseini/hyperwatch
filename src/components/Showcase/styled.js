@@ -2,14 +2,18 @@
 import styled from 'styled-components';
 import SlickSlider from 'react-slick';
 
+const height = ({ type }) => {
+  return { 1: '425px', 2: '600px' }[type];
+};
+
 export const Wrapper = styled.div`
-  margin: 5rem 0 3rem;
-  overflow: hidden;
+  margin-top: ${({ type }) => (type !== 2 ? '100px' : 0)};
 `;
 
 export const Slider = styled(SlickSlider)`
   & .slick-dots {
-    bottom: calc(-25px - 2rem) !important;
+    position: static !important;
+    margin-top: 2rem !important;
   }
 `;
 
@@ -45,11 +49,12 @@ export const Card = styled.div`
   position: relative;
   overflow: hidden;
 
-  border-radius: 50px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  border-radius: ${({ type }) => (type === 1 ? '50px' : 0)};
+  box-shadow: ${({ type }) =>
+    type === 1 ? '0 3px 5px rgba(0, 0, 0, 0.2)' : '0 0 0'};
 
   padding: 2rem;
-  min-height: 425px;
+  min-height: ${height};
 
   &:hover,
   &:focus,
@@ -68,7 +73,7 @@ export const Slide = styled.div`
   width: ${(props) => props.size || 10}vw !important;
 
   max-width: 60vw;
-  padding: 0 2rem;
+  padding: ${({ type }) => (type === 1 ? '0 2rem' : '0')};
 
   @media (max-width: 992px) {
     width: ${(props) => (props.size || 10) * 2}vw !important;
