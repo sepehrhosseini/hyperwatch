@@ -7,7 +7,11 @@ export const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-export const Slider = styled(SlickSlider)``;
+export const Slider = styled(SlickSlider)`
+  & .slick-dots {
+    bottom: calc(-25px - 2rem) !important;
+  }
+`;
 
 export const CardBg = styled.div`
   position: absolute;

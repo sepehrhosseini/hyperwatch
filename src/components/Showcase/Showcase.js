@@ -36,10 +36,13 @@ const sliderOptions = {
   variableWidth: true,
   touchThreshold: 17,
   infinite: false,
+  arrows: false,
   responsive: [
     {
       breakpoint: 992,
       settings: {
+        centerMode: true,
+        dots: true,
         slidesToShow: 1,
       },
     },
