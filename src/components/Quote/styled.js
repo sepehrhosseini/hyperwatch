@@ -52,7 +52,7 @@ export const Subtitle = styled.div`
   text-align: ${({ type }) => (type === 1 ? 'right' : 'center')};
   margin-top: 3rem;
 
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 400;
 
   ${({ type }) => type === 2 && 'color: rgba(255,255,255,.7)'}

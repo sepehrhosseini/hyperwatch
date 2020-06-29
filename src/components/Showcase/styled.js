@@ -79,8 +79,12 @@ export const Slide = styled.div`
     width: ${(props) => (props.size || 10) * 2}vw !important;
   }
 
-  @media (max-width: 768px) {
-    width: 350px !important;
+  @media (max-width: 767px) {
+    width: 360px !important;
+  }
+
+  @media (max-width: 575px) {
+    width: 320px !important;
     max-width: none;
   }
 

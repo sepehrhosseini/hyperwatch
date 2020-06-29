@@ -69,12 +69,13 @@ export const Title = styled.div`
 
   margin-top: auto;
   margin-bottom: 0;
-  padding-left: 2rem;
+  padding-left: 32px;
 
   line-height: 60px;
 
-  font-size: 1.5rem;
+  font-size: 25px;
   font-weight: 900;
+  font-style: italic;
 
   position: relative;
   z-index: 10;
