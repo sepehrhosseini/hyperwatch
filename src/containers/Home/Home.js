@@ -5,6 +5,7 @@ import TitlesGrid from '../../components/TitlesGrid';
 import GenresSlider from '../../components/GenresSlider';
 import Showcase from '../../components/Showcase';
 import Quote from '../../components/Quote';
+import Features from '../../components/Features';
 
 import { getWatchlist, getGenres, getPopular } from './actions';
 
@@ -66,6 +67,7 @@ const Home = () => {
       <Showcase />
       <Quote />
       <Showcase type={2} boxed={false} />
+      <Features />
     </div>
   );
 };
