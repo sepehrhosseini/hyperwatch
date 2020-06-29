@@ -6,6 +6,7 @@ import Home from './containers/Home';
 import SearchPage from './containers/SearchPage';
 import AuthToken from './components/Auth/Token';
 import WatchlistPage from './containers/WatchlistPage';
+import Footer from './components/Footer';
 
 import history from './history';
 
@@ -32,6 +33,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
+        <Footer />
       </div>
     </Router>
   );
