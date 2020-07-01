@@ -32,7 +32,8 @@ export const Heading = styled.div`
   @media (max-width: 992px) {
     box-shadow: none;
     flex: 0;
-    padding: 2rem 0;
+    max-width: none;
+    padding: 2rem 0 3rem;
   }
 `;
 
