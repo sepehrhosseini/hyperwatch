@@ -7,15 +7,4 @@ export const Title = styled.div`
   color: inherit;
 
   padding: 8px 16px;
-
-  &:before {
-    content: '';
-
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 100px;
-  }
 `;

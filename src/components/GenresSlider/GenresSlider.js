@@ -31,33 +31,29 @@ const GenresSlider = ({ genres, isLoading, selectedGenre }) => {
     dispatch(selectGenre(genre.slug));
   };
 
-  console.log('selectedGenre: ', selectedGenre);
-
   return (
     <div>
       <Container>
         <Slider {...settings} className={styles.slider}>
-          {genres.map((genre, index) => {
-            return (
-              <div>
-                <div className={styles.slide}>
-                  <Card
-                    className={[
-                      styles.card,
-                      {
-                        [styles.card_active]:
-                          selectedGenre === genre.slug,
-                      },
-                    ]}
-                  >
-                    <CardActionArea onClick={() => onClick(genre)}>
-                      <Title>{genre.name}</Title>
-                    </CardActionArea>
-                  </Card>
-                </div>
+          {genres.map((genre, index) => (
+            <div>
+              <div className={styles.slide}>
+                <Card
+                  className={[
+                    styles.card,
+                    {
+                      [styles.card_active]:
+                        selectedGenre === genre.slug,
+                    },
+                  ]}
+                >
+                  <CardActionArea onClick={() => onClick(genre)}>
+                    <Title>{genre.name}</Title>
+                  </CardActionArea>
+                </Card>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </Slider>
       </Container>
     </div>

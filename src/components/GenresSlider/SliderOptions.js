@@ -7,10 +7,12 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 export default {
   slidesToShow: 6,
+  slidesToScroll: 3,
   arrows: true,
   draggable: false,
   infinite: false,
   adaptiveHeight: true,
+  variableWidth: true,
   prevArrow: (
     <div className="prevvvvvi">
       <IconButton>
@@ -29,8 +31,8 @@ export default {
     {
       breakpoint: 960,
       settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2,
+        arrows: false,
+        infinite: true,
       },
     },
   ],
