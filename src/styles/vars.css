@@ -1,4 +1,8 @@
 :root {
+  --sm: 576px;
+  --md: 768px;
+  --lg: 992px;
+  --xl: 1200px;
   --primary-color: #d04441;
   --primary-light-color: #fbc7c7;
 }

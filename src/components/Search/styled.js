@@ -1,7 +1,23 @@
 import styled from 'styled-components';
 
-export const SearchWrapper = styled.div`
-  margin-left: 30px;
+export const SearchWrapper = styled.div``;
+
+const hideBelow = (size) => `
+    @media (max-width: ${size}px) {
+      display: none;
+    }
+`;
+
+const mobileMenuStyle = () => `
+  display: flex;
+  border-radius: 0;
+  width: 100%;
+
+  input {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+  }
 `;
 
 export const Search = styled.div`
@@ -13,6 +29,11 @@ export const Search = styled.div`
   &:focus-within {
     background-color: rgba(245, 245, 245, 0.6);
   }
+
+  ${({ hideBelowMd, theme }) =>
+    !!hideBelowMd && hideBelow(theme.bp.md - 1)}
+
+  ${({ onMobileMenu }) => !!onMobileMenu && mobileMenuStyle()}
 `;
 
 export const SearchField = styled.input`
