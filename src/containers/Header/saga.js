@@ -1,23 +1,18 @@
-import { all, put, call, takeLatest, debounce, select } from 'redux-saga/effects';
-// import { browserHistory } from 'react-router-dom'
-import history from '../../history';
+import { all, put, takeLatest, delay } from 'redux-saga/effects';
 
-import { Search } from './actions'
+import { Search } from './actions';
 import { searchTitles } from '../SearchPage/actions';
 
-function* makeSearch() {
-    try {
-		const query = yield select(state => state.header.searchQuery);
-		history.push(`/search/${query}`);
+function* makeSearch({ force }) {
+  try {
+    if (!force) yield delay(500);
 
-		yield put(searchTitles());
-    } catch (error) {
-		console.log(error)
-    }
+    yield put(searchTitles());
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-export default function*() {
-    yield all([
-        debounce(500, Search.updateQuery, makeSearch),
-    ])
+export default function* () {
+  yield all([takeLatest(Search.updateQuery, makeSearch)]);
 }

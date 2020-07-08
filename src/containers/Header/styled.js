@@ -1,17 +1,22 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-    max-width: 1100px;
-    margin: 0 auto;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
 
-    margin-top: 40px;
+  padding-top: 8px;
 
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-`
+  @media (min-width: ${({ theme }) => theme.bp.md}px) {
+    padding-top: 20px;
+  }
+`;
 
 export const Logo = styled.div`
+  max-width: 140px;
+  margin-right: 20px;
+
+  @media (min-width: ${({ theme }) => theme.bp.md}px) {
     max-width: 240px;
-    margin-right: 20px;
-`
+  }
+`;

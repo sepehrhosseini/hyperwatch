@@ -5,20 +5,20 @@ import { Titles, getSingleSuccess } from './actions';
 import { singleTitle, singleTitleOMDB } from '../../utils/api';
 
 function* fetchSingle({ titleType: type, id }) {
-    try {
-        const title = merge(...yield all([
-            singleTitle({ type, id }).then(({ data }) => data),
-            singleTitleOMDB({ type, id }).then(({ data }) => data)
-        ]));
+  try {
+    const title = merge(
+      ...(yield all([
+        singleTitle({ type, id }).then(({ data }) => data),
+        singleTitleOMDB({ type, id }).then(({ data }) => data),
+      ])),
+    );
 
-        yield put(getSingleSuccess(title));
-    } catch (error) {
-        console.log(error)
-    }
+    yield put(getSingleSuccess(title));
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-export default function*() {
-    yield all([
-        takeLatest(Titles.getSingle, fetchSingle),
-    ])
+export default function* () {
+  yield all([takeLatest(Titles.getSingle, fetchSingle)]);
 }

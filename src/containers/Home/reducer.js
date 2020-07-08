@@ -1,93 +1,139 @@
-import { Movies, Shows, Title } from './actions'
+import { pick, merge, get } from 'lodash';
+import { createSlice } from '@reduxjs/toolkit';
+import {
+  addToWatchlist,
+  removeFromWatchlist,
+  getWatchlist,
+  getGenres,
+  selectGenre,
+  getPopular,
+  getSingle,
+  startLoading,
+  stopLoading,
+} from './actions';
 
-const initialState = {
+const slice = createSlice({
+  name: 'home',
+  initialState: {
     shows: [],
     movies: [],
     isLoading: true,
+    err: null,
+
+    watchlist: {
+      data: [],
+      loadingIds: [],
+      err: null,
+    },
+
+    genres: {
+      data: [],
+      isLoading: false,
+      selectedSlug: null,
+    },
 
     single: {
-        isLoading: false,
-        error: null,
-        id: null,
-        title: null,
-        type: null
-    }
-}
+      isLoading: false,
+      err: null,
+      id: null,
+      title: null,
+      type: null,
+    },
+  },
+  reducers: {},
+  extraReducers: {
+    [addToWatchlist.fulfilled]: (state, action) => {
+      const ids = Object.values(action.meta.arg)
+        .flat()
+        .map((title) => get(title, 'ids.trakt'));
+      state.watchlist.loadingIds = state.watchlist.loadingIds.filter(
+        (id) => !ids.includes(id),
+      );
+    },
+    [addToWatchlist.pending]: (state, action) => {
+      const ids = Object.values(action.meta.arg)
+        .flat()
+        .map((title) => get(title, 'ids.trakt'));
 
-export default (state = initialState, action) => {
-    switch(action.type) {
-        case Movies.getPopular:
-            return {
-                ...state,
-                isLoading: true,
-            }
+      state.watchlist.loadingIds.push(...ids);
+    },
+    [addToWatchlist.rejected]: (state, action) => {},
+    [removeFromWatchlist.fulfilled]: (state, action) => {
+      const ids = Object.values(action.meta.arg)
+        .flat()
+        .map((title) => get(title, 'ids.trakt'));
+      state.watchlist.loadingIds = state.watchlist.loadingIds.filter(
+        (id) => !ids.includes(id),
+      );
+      state.watchlist.isLoading = false;
+    },
+    [removeFromWatchlist.pending]: (state, action) => {
+      const ids = Object.values(action.meta.arg)
+        .flat()
+        .map((title) => get(title, 'ids.trakt'));
 
-        case Movies.getPopularSuccess:
-            return {
-                ...state,
-                isLoading: false,
-                movies: action.movies
-            }
+      state.watchlist.loadingIds.push(...ids);
+      state.watchlist.isLoading = true;
+    },
+    [removeFromWatchlist.rejected]: (state, action) => {
+      const ids = Object.values(action.meta.arg)
+        .flat()
+        .map((title) => get(title, 'ids.trakt'));
+      state.watchlist.loadingIds = state.watchlist.loadingIds.filter(
+        (id) => !ids.includes(id),
+      );
+      state.watchlist.isLoading = false;
+    },
+    [getWatchlist.fulfilled]: (state, action) => {
+      state.watchlist.data = action.payload;
+    },
+    [getGenres.pending]: (state) => {
+      state.genres.isLoading = true;
+    },
+    [getGenres.fulfilled]: (state, action) => {
+      state.genres.isLoading = false;
+      state.genres.data = action.payload;
+    },
+    [getGenres.rejected]: (state) => {
+      state.genres.isLoading = false;
+    },
+    [selectGenre.pending]: (state, action) => {
+      state.isLoading = true;
+      state.genres.selectedSlug = action.meta.arg;
+    },
+    [selectGenre.fulfilled]: (state, action) => {
+      merge(state, pick(action.payload, ['movies', 'shows']));
+      state.isLoading = false;
+    },
+    [getPopular.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getPopular.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      merge(state, pick(action.payload, ['movies', 'shows']));
+    },
+    [getPopular.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.err = action.payload;
+    },
+    [getSingle.pending]: (state) => {
+      state.single.isLoading = true;
+    },
+    [getSingle.fulfilled]: (state, action) => {
+      state.single.isLoading = false;
+      state.single.title = action.payload;
+    },
+    [getSingle.rejected]: (state, action) => {
+      state.single.isLoading = false;
+      state.single.err = action.payload;
+    },
+    [startLoading]: (state, action) => {
+      state.isLoading = true;
+    },
+    [stopLoading]: (state, action) => {
+      state.isLoading = false;
+    },
+  },
+});
 
-        case Movies.getPopularFailed:
-            return {
-                ...state,
-                isLoading: false,
-                error: action.error
-            }
-
-        case Shows.getPopular:
-            return {
-                ...state,
-                isLoading: true,
-            }
-
-        case Shows.getPopularSuccess:
-            return {
-                ...state,
-                isLoading: false,
-                shows: action.shows,
-            }
-
-        case Shows.getPopularFiled:
-            return {
-                ...state,
-                isLoading: false,
-                error: action.error
-            }
-
-        case Title.getSingle:
-            return {
-                ...state,
-                single: {
-                    ...state.single,
-                    type: action.titleType,
-                    id: action.id,
-                    isLoading: true,
-                }
-            }
-
-        case Title.getSingleSuccess:
-            return {
-                ...state,
-                single: {
-                    ...state.single,
-                    isLoading: false,
-                    title: action.title
-                }
-            }
-
-        case Title.getSingleFailed:
-            return {
-                ...state,
-                single: {
-                    ...state.single,
-                    isLoading: false,
-                    error: action.error,
-                }
-            }
-
-        default:
-            return state;
-    }
-}
+export default slice.reducer;
