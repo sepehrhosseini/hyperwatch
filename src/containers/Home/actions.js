@@ -1,5 +1,5 @@
 import { uniqBy } from 'lodash';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   addToWatchlist as addToWatchlistAPI,
   removeFromWatchlist as removeFromWatchlistAPI,
@@ -84,3 +84,6 @@ export const getSingle = createAsyncThunk(
     return { ...title, ...titleOMDB };
   },
 );
+
+export const startLoading = createAction('HOME/START_LOADING');
+export const stopLoading = createAction('HOME/STOP_LOADING');

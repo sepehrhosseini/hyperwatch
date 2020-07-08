@@ -8,6 +8,8 @@ import {
   selectGenre,
   getPopular,
   getSingle,
+  startLoading,
+  stopLoading,
 } from './actions';
 
 const slice = createSlice({
@@ -55,9 +57,7 @@ const slice = createSlice({
 
       state.watchlist.loadingIds.push(...ids);
     },
-    [addToWatchlist.rejected]: (state, action) => {
-      state.watchlist.isLoading = false;
-    },
+    [addToWatchlist.rejected]: (state, action) => {},
     [removeFromWatchlist.fulfilled]: (state, action) => {
       const ids = Object.values(action.meta.arg)
         .flat()
@@ -98,10 +98,12 @@ const slice = createSlice({
       state.genres.isLoading = false;
     },
     [selectGenre.pending]: (state, action) => {
+      state.isLoading = true;
       state.genres.selectedSlug = action.meta.arg;
     },
     [selectGenre.fulfilled]: (state, action) => {
       merge(state, pick(action.payload, ['movies', 'shows']));
+      state.isLoading = false;
     },
     [getPopular.pending]: (state) => {
       state.isLoading = true;
@@ -124,6 +126,12 @@ const slice = createSlice({
     [getSingle.rejected]: (state, action) => {
       state.single.isLoading = false;
       state.single.err = action.payload;
+    },
+    [startLoading]: (state, action) => {
+      state.isLoading = true;
+    },
+    [stopLoading]: (state, action) => {
+      state.isLoading = false;
     },
   },
 });
